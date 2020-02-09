@@ -15,17 +15,17 @@ public class HomeController extends Controller {
     @Inject Database db;
 
     public Result index() {
-        String msg = "database record:<br>";
+        String msg = "<table><tbody><thead><tr><th>ID</th><th>Name</th><th>Price</th><tbody><tr>";
         try {
             Connection conn = db.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * from book");
-            msg += "<ul>";
             while (rs.next()) {
-                msg += "<li>" + rs.getInt("id") + ":" + rs.getString("book_name") +
-                rs.getInt("price");
+                msg += "<th>" + rs.getInt("id") + "</th>";
+                msg += "<th>" + rs.getString("book_name") + "</th>";
+                msg += "<th>" + rs.getInt("price") + "</th>";
             }
-            msg += "<ul>";
+            msg += "</tr></tbody></table>";
         } catch (SQLException e){}
 
         return ok(views.html.index.render(msg));
